@@ -35,27 +35,34 @@
 
   Drupal.bootstrap.classSelector = function($classSelector) {
     var $this = this;
-    var $selectorFor = $("#"+$classSelector.attr('data-for'));
-    $classSelector.bind('change',function(){
-      Drupal.bootstrap.removeClasses($selectorFor);
-      $selectorFor.addClass($classSelector.val());
-      Drupal.ajax['bootstrap-class-selector-ajax'].options.data = {
-        'item': $classSelector.attr('data-for-id'),
-        'bootstrap_class': $classSelector.val()
-      };
-      jQuery('.panel-bootstrap-edit-layout').trigger('updateBootstrapClass');
+    $classSelector.each(function(){
+      var $selectorFor = $("#"+$(this).attr('data-for'));
+      var screenSize = $(this).attr('data-screen-size');
+      $(this).bind('change',function(){
+        Drupal.bootstrap.removeClasses($selectorFor,screenSize);
+        $selectorFor.addClass($(this).val());
+        Drupal.ajax['bootstrap-class-selector-ajax'].options.data = {
+          'item': $(this).attr('data-for-id'),
+          'bootstrap_class': $(this).val(),
+          'bootstrap_screen': $(this).attr('data-screen-size')
+        };
+        jQuery('.panel-bootstrap-edit-layout').trigger('updateBootstrapClass');
+      });
     })
   }
 
-  Drupal.bootstrap.removeClasses = function($row){
+  Drupal.bootstrap.removeClasses = function($row,screenSize){
+    console.log($row)
      $row.removeClass(function() { /* Matches even table-col-row */
        var classesToRemove = '',
-       classes = this.className.split(' ');
+       classes = this.className.split(' '),
+       regex = new RegExp('col-'+screenSize);
        for(var i = 0; i < classes.length; i++ ) {
-           if( /span\d{1,3}/.test( classes[i] ) ) { /* Filters */
+           if( regex.test( classes[i] ) ) { /* Filters */
                classesToRemove += classes[i] + ' ';
            }
        }
+       console.log(classesToRemove)
        return classesToRemove ; /* Returns all classes to be removed */
     });
   }

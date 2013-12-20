@@ -5,7 +5,7 @@
  */
 // Plugin definition
 $plugin = array(
-  'title' => t('Twitter Bootstrap 2'),
+  'title' => t('Twitter Bootstrap 3'),
   'category' => t('Builders'),
   'icon' => 'bootstrap.png',
   'theme' => 'panels_bootstrap',
@@ -112,8 +112,12 @@ function panels_bootstrap_convert_settings(&$settings, &$layout) {
         ),
         'main' => array(
           'type' => 'column',
-          'bootstrap_class' => 'span12',
-          'grid_type' => 'row',
+          'bootstrap_class' => array(
+            'xs' => 'col-xs-12',
+            'sm' => 'col-sm-12',
+            'md' => 'col-md-12',
+            'lg' => 'col-lg-12'
+          ),
           'children' => array('main-row'),
           'parent' => 'canvas',
         ),
@@ -126,8 +130,12 @@ function panels_bootstrap_convert_settings(&$settings, &$layout) {
         'center' => array(
           'type' => 'region',
           'title' => t('Center'),
-          'bootstrap_class' => 'span12',
-          'grid_type' => 'row',
+          'bootstrap_class' => array(
+            'xs' => 'col-xs-12',
+            'sm' => 'col-sm-12',
+            'md' => 'col-md-12',
+            'lg' => 'col-lg-12'
+          ),
           'parent' => 'main-row',
         ),
       ),
@@ -148,8 +156,12 @@ function panels_bootstrap_convert_settings(&$settings, &$layout) {
       $settings['items']['canvas']['children'][] = 'sidebar-left';
       $settings['items']['sidebar-left'] = array(
         'type' => 'column',
-        'bootstrap_class' => 'span1',
-        'grid_type' => 'row',
+        'bootstrap_class' => array(
+          'xs' => 'col-xs-12',
+          'sm' => 'col-sm-12',
+          'md' => 'col-md-12',
+          'lg' => 'col-lg-12'
+        ),
         'children' => array('sidebar-left-row'),
         'parent' => 'canvas',
       );
@@ -162,8 +174,12 @@ function panels_bootstrap_convert_settings(&$settings, &$layout) {
       $settings['items']['sidebar_left'] = array(
         'type' => 'region',
         'title' => t('Left sidebar'),
-        'bootstrap_class' => 'span1',
-        'grid_type' => 'row',
+        'bootstrap_class' => array(
+          'xs' => 'col-xs-12',
+          'sm' => 'col-sm-12',
+          'md' => 'col-md-12',
+          'lg' => 'col-lg-12'
+        ),
         'parent' => 'sidebar-left-row',
       );
     }
@@ -174,8 +190,12 @@ function panels_bootstrap_convert_settings(&$settings, &$layout) {
       $settings['items']['canvas']['children'][] = 'sidebar-right';
       $settings['items']['sidebar-right'] = array(
         'type' => 'column',
-        'bootstrap_class' => 'span1',
-        'grid_type' => 'row',
+        'bootstrap_class' => array(
+          'xs' => 'col-xs-12',
+          'sm' => 'col-sm-12',
+          'md' => 'col-md-12',
+          'lg' => 'col-lg-12'
+        ),
         'children' => array('sidebar-right-row'),
         'parent' => 'canvas',
       );
@@ -188,8 +208,12 @@ function panels_bootstrap_convert_settings(&$settings, &$layout) {
       $settings['items']['sidebar_right'] = array(
         'type' => 'region',
         'title' => t('Right sidebar'),
-        'bootstrap_class' => 'span1',
-        'grid_type' => 'row',
+        'bootstrap_class' => array(
+          'xs' => 'col-xs-12',
+          'sm' => 'col-sm-12',
+          'md' => 'col-md-12',
+          'lg' => 'col-lg-12'
+        ),
         'parent' => 'sidebar-right-row',
       );
     }
@@ -197,8 +221,12 @@ function panels_bootstrap_convert_settings(&$settings, &$layout) {
     // Add the main column.
     $settings['items']['main'] = array(
       'type' => 'column',
-      'bootstrap_class' => 'span1',
-      'grid_type' => 'row',
+      'bootstrap_class' => array(
+        'xs' => 'col-xs-12',
+        'sm' => 'col-sm-12',
+        'md' => 'col-md-12',
+        'lg' => 'col-lg-12'
+      ),
       'children' => array(),
       'parent' => 'canvas',
     );
@@ -219,8 +247,12 @@ function panels_bootstrap_convert_settings(&$settings, &$layout) {
         // Create entry for the region
         $settings['items']["row_${row}_$col"] = array(
           'type' => 'region',
-          'bootstrap_class' => 'span1',
-          'grid_type' => 'row',
+          'bootstrap_class' => array(
+            'xs' => 'col-xs-12',
+            'sm' => 'col-sm-12',
+            'md' => 'col-md-12',
+            'lg' => 'col-lg-12'
+          ),
           'parent' => "row_$row",
         );
         // Add entry for the region to the row's children
@@ -357,14 +389,8 @@ function theme_panels_bootstrap($vars) {
 
   $renderer = panels_bootstrap_create_renderer(FALSE, $css_id, $content, $settings, $display, $layout, $handler);
 
-  if(isset($renderer->settings['items']['canvas']['grid_type'])){
-    $grid_type = $renderer->settings['items']['canvas']['grid_type'];
-  }else{
-    $grid_type = 'row';
-  }
-
   $output = "<div class=\"panel-bootstrap " . $renderer->base['canvas'] . " clearfix\" $renderer->id_str>\n";
-  $output .= "<div class=\"".$grid_type." panel-bootstrap-inside " . $renderer->base['canvas'] . "-inside\">\n";
+  $output .= "<div class='row panel-bootstrap-inside " . $renderer->base['canvas'] . "-inside'>\n";
 
   $output .= panels_bootstrap_render_items($renderer, $settings['items']['canvas']['children'], $renderer->base['canvas']);
 
@@ -387,7 +413,7 @@ function theme_panels_bootstrap_admin($vars) {
 
   if ($path = libraries_get_path('bootstrap')) {
     drupal_add_css($path . '/css/bootstrap.min.css');
-    drupal_add_css($path . '/css/bootstrap-responsive.min.css');
+    drupal_add_css($path . '/css/bootstrap-theme.min.css');
   }
 
   // We never draw stored bootstrap layouts in admin mode; they must be edited
@@ -412,12 +438,8 @@ function theme_panels_bootstrap_admin($vars) {
   else {
     $output = "<div class=\"panel-bootstrap " . $renderer->base['canvas'] . " clearfix panel-bootstrap-admin panel-bootstrap-edit-layout\" $renderer->id_str>\n";
   }
-  if(isset($renderer->settings['items']['canvas']['grid_type'])){
-    $grid_type = $renderer->settings['items']['canvas']['grid_type'];
-  }else{
-    $grid_type = 'row';
-  }
-  $output .= "<div class=\"". $grid_type ."panel-bootstrap-inside " . $renderer->base['canvas'] . "-inside \">\n";
+
+  $output .= "<div class=\"row panel-bootstrap-inside " . $renderer->base['canvas'] . "-inside \">\n";
 
   $content = panels_bootstrap_render_items($renderer, $settings['items']['canvas']['children'], $renderer->base['row'] . '-canvas');
   $output .= panels_bootstrap_render_item($renderer, $settings['items']['canvas'], $content, 'canvas', 0, 0, TRUE);
@@ -494,20 +516,20 @@ function panels_bootstrap_render_item($renderer, $item, $content, $id, $position
   if (($item['type'] == 'region' || $item['type'] == 'column') && isset($item['bootstrap_class'])){
     $bootstrap_class = $item['bootstrap_class'];
   } else if(($item['type'] == 'region' || $item['type'] == 'column')){
-    $bootstrap_class = 'span1';
+    $bootstrap_class = array(
+      'xs' => 'col-xs-12',
+      'sm' => 'col-sm-12',
+      'md' => 'col-md-12',
+      'lg' => 'col-lg-12'
+    );
   }
 
+  if(is_array($bootstrap_class)){
+    $bootstrap_class = implode(" ", $bootstrap_class);
+  }
   $item_type = $item['type'];
-  
-  if($item['type'] == "row"){
-    if(isset($item['grid_type'])){
-      $grid_type = $item['grid_type'];
-    }else{
-      $grid_type = 'row';
-    }
-  }
 
-  $output .= '  <div id="panel-bootstrap-'. $item['type'] .'-'. $id .'" class="' . $bootstrap_class . ' ' . $item_class . ' ' . $grid_type . ' inside';
+  $output .= '  <div id="panel-bootstrap-'. $item['type'] .'-'. $id .'" class="' . $bootstrap_class . ' ' . $item_class . ' ' . $item['type'] . ' inside';
   if ($position == 0) {
     $output .= ' ' . $item['type'] . '-inside-first';
   }
@@ -545,29 +567,31 @@ function panels_bootstrap_render_item($renderer, $item, $content, $id, $position
 function panels_bootstrap_render_bootstrap_class_selector($renderer,$item_id) {
   $bootstrap_class = '';
   $item = $renderer->settings['items'][$item_id];
-  $form = array(
-    '#type' => 'select',
-    '#id' => $item_id.'-class-selector',
-    '#attributes' => array('data-for-id' => $item_id,'data-for' => 'panel-bootstrap-'.$item['type'].'-'.$item_id),
-    '#title' => t('Span size'),
-    '#options' => array(
-      'span1' => 'span1',
-      'span2' => 'span2',
-      'span3' => 'span3',
-      'span4' => 'span4',
-      'span5' => 'span5',
-      'span6' => 'span6',
-      'span7' => 'span7',
-      'span8' => 'span8',
-      'span9' => 'span9',
-      'span10' => 'span10',
-      'span11' => 'span11',
-      'span12' => 'span12'
-      ),
-    '#default_value' => "span1",
-    '#value' => isset($item['bootstrap_class']) ? $item['bootstrap_class'] : "span1",
-  );
-
+  $screen_sizes = array("xs","sm","md","lg");
+  foreach($screen_sizes as $screen_size){
+    $form[] = array(
+      '#type' => 'select',
+      '#id' => $item_id.'-'.$screen_size.'-class-selector',
+      '#attributes' => array('data-for-id' => $item_id,'data-for' => 'panel-bootstrap-'.$item['type'].'-'.$item_id, 'data-screen-size' => $screen_size),
+      '#title' => t($screen_size . ' column size'),
+      '#options' => array(
+        'col-'.$screen_size.'-1' => 'col-'.$screen_size.'-1',
+        'col-'.$screen_size.'-2' => 'col-'.$screen_size.'-2',
+        'col-'.$screen_size.'-3' => 'col-'.$screen_size.'-3',
+        'col-'.$screen_size.'-4' => 'col-'.$screen_size.'-4',
+        'col-'.$screen_size.'-5' => 'col-'.$screen_size.'-5',
+        'col-'.$screen_size.'-6' => 'col-'.$screen_size.'-6',
+        'col-'.$screen_size.'-7' => 'col-'.$screen_size.'-7',
+        'col-'.$screen_size.'-8' => 'col-'.$screen_size.'-8',
+        'col-'.$screen_size.'-9' => 'col-'.$screen_size.'-9',
+        'col-'.$screen_size.'-10' => 'col-'.$screen_size.'-10',
+        'col-'.$screen_size.'-11' => 'col-'.$screen_size.'-11',
+        'col-'.$screen_size.'-12' => 'col-'.$screen_size.'-12'
+        ),
+      '#default_value' => "1",
+      '#value' => isset($item['bootstrap_class'][$screen_size]) ? $item['bootstrap_class'][$screen_size] : 'col-'.$screen_size.'-12',
+    );
+  }
   return drupal_render($form);
 }
 
@@ -776,18 +800,6 @@ function panels_bootstrap_config_item_form($form, &$form_state) {
     );
   }
 
-  if ($item['type'] == 'row' || $item['type'] == 'canvas'){
-    $form['grid_type'] = array(
-      '#type' => 'select',
-      '#title' => t('Grid type'),
-      '#default_value' => $item['grid_type'],
-      '#options' => array(
-        'row-fluid' => t('Fluid'),
-        'row' => t('Basic'),
-      ),
-    );
-  }
-
   if ($id == 'canvas') {
     $form['class'] = array(
       '#title' => t('Canvas class'),
@@ -887,16 +899,12 @@ function panels_bootstrap_config_item_form_submit(&$form, &$form_state) {
     // Reverse this as the checkbox is backward from how we actually store
     // it to make it simpler to default to scaling.
     $item['no_scale'] = !$form_state['values']['no_scale'];
-    $item['grid_type'] = $form_state['values']['grid_type'];
     $item['column_separation'] = $form_state['values']['column_separation'];
     $item['region_separation'] = $form_state['values']['region_separation'];
     $item['row_separation'] = $form_state['values']['row_separation'];
   }
   else if ($item['type'] != 'row') {
 
-  }
-  else if ($item['type'] == 'row') {
-    $item['grid_type'] = $form_state['values']['grid_type'];
   }
   else {
     $item['contains'] = $form_state['values']['contains'];
@@ -937,8 +945,12 @@ function panels_ajax_bootstrap_edit_add($handler, $id, $location = 'left') {
           $item = array(
             'type' => 'region',
             'title' => '',
-            'bootstrap_class' => 'span1',
-            'grid_type' => 'row',
+            'bootstrap_class' => array(
+              'xs' => 'col-xs-12',
+              'sm' => 'col-sm-12',
+              'md' => 'col-md-12',
+              'lg' => 'col-lg-12'
+            ),
             'parent' => $id,
           );
           break;
@@ -946,7 +958,6 @@ function panels_ajax_bootstrap_edit_add($handler, $id, $location = 'left') {
           $title = $location == 'left' ? t('Add column to left') : t('Add column to right');
           $item = array(
             'type' => 'column',
-            'grid_type' => 'row',
             'parent' => $id,
             'children' => array(),
           );
@@ -1092,19 +1103,6 @@ function panels_bootstrap_add_item_form($form, &$form_state) {
   $location = &$form_state['location'];
   $id = &$form_state['id'];
 
-
-  if ($item['type'] == 'row' || $item['type']== 'canvas'){
-    $form['grid_type'] = array(
-      '#type' => 'select',
-      '#title' => t('Grid type'),
-      '#default_value' => $item['grid_type'],
-      '#options' => array(
-        'row-fluid' => t('Fluid'),
-        'row' => t('Basic'),
-      ),
-    );
-  }
-
   if ($item['type'] == 'region') {
     $form['title'] = array(
       '#title' => t('Region title'),
@@ -1161,10 +1159,7 @@ function panels_bootstrap_add_item_form_submit(&$form, &$form_state) {
 
   if ($item['type'] != 'row') {
     
-  }elseif ($item['type'] == 'row'){
-    $item['grid_type'] = $form_state['values']['grid_type'];
-  }
-  else {
+  }else {
     $item['contains'] = $form_state['values']['contains'];
   }
 
@@ -1301,8 +1296,9 @@ function panels_ajax_bootstrap_edit_resize($handler) {
   ctools_include('ajax');
   $settings = &$handler->display->layout_settings;
   panels_bootstrap_convert_settings($settings, $handler->plugins['layout']);
-
-  $settings['items'][$_POST['item']]['bootstrap_class'] = $_POST['bootstrap_class'];
+  $bootstrap_class = $_POST['bootstrap_class'];
+  $bootstrap_screen = $_POST['bootstrap_screen'];
+  $settings['items'][$_POST['item']]['bootstrap_class'][$bootstrap_screen] = $bootstrap_class;
 
   // Save our new state.
   panels_edit_cache_set($handler->cache);
