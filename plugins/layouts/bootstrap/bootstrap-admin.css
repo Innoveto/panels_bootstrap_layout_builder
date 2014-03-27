@@ -1,6 +1,9 @@
 html{
   font-size: inherit !important;
 }
+.container-full { 
+	padding: 0 15px; 
+}
 
 #panels-dnd-main .panel-bootstrap-edit-layout div.panels-display .pane-add-link,
 .panel-bootstrap-edit-layout .panel-pane {
